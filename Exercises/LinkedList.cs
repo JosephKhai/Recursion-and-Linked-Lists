@@ -20,21 +20,29 @@ namespace Exercises
 
         public void AddToEnd(string newData) {
             ListNode newNode = new ListNode(newData, null);
-            
+
+
+            // If this is the first node set it as head and return
             if (Head == null) {
                 Head = newNode;
                 return;
-            } 
-            
+            }
+
+            // if not the first node
+            // start at the head
+
             ListNode current = Head;
 
+            //loop through to find the last node
             while (current.Next != null) {
                 current = current.Next;
             }
-
-                current.Next = newNode;
+            // add the new node to the end
+            current.Next = newNode;
         }
-        
+
+
+       
         public ListNode GetNodeAt(int index) {
             int count = 0;
 
@@ -74,7 +82,14 @@ namespace Exercises
         /// </summary>
         /// <returns>int: count</returns>
         public int Count() {
-            return -1;
+            int count = 0;
+            ListNode current = Head;
+            while(current != null)
+            {
+                current = current.Next;
+                count++;
+            }
+            return count;           
         }
 
         /// <summary>
@@ -82,8 +97,20 @@ namespace Exercises
         /// </summary>
         /// <param name="data"></param>
         /// <returns>success: true</returns>
-        public bool AddToStart(string data) {
-            return false;
+        public bool AddToStart(string data) {         
+            ListNode newNode = new ListNode(data);
+            if(Head == null)
+            {
+                Head = newNode;
+                return false;
+            }
+            else
+            {
+                newNode.Next = Head;
+                Head = newNode;
+                return true;
+            }      
+           
         }
 
         /// <summary>
@@ -94,7 +121,37 @@ namespace Exercises
         /// <param name="index"></param>
         /// <returns></returns>
         public bool AddNodeAt(string data, int index) {
-            return false;
+            ListNode newNode = new ListNode(data);
+
+            //if asked to add to -ve index (i.e. doesnt exist) 'tell them to bugger off.
+            if (index <= 0)
+            {
+                return false;
+            }
+
+            // make a copy of the head (start of list)
+            ListNode current = Head;
+
+            // set up to track the node before the current
+            ListNode pre = null;
+
+            int i = 0;
+            // find the node ate the needed index
+            while ( i < index - 1)
+            {   
+                if(current.Next == null)
+                {
+                    ListNode nullnode = new ListNode(null, null);
+                    current.Next = nullnode;
+                }               
+                current = current.Next;
+                i++;
+            }
+
+            newNode.Next = current.Next;
+            current.Next = newNode;
+
+            return true;       
         }
 
         /// <summary>
@@ -103,7 +160,33 @@ namespace Exercises
         /// <param name="index"></param>
         /// <returns></returns>
         public bool DeleteNodeAt(int index) {
-            return false;
+
+            if (Head == null)
+            {
+                return false;
+            }
+
+             ListNode current = Head;
+
+            if (index == 0)
+            {
+                Head = current.Next;
+                return true;
+            }
+
+            for (int i = 0; current != null && i < index - 1; i++)
+            {
+                current = current.Next;
+            }
+
+            if (current == null || current.Next == null)
+            {
+                return false;
+            }
+
+            ListNode next = current.Next.Next;
+            current.Next = next;
+            return true;            
         }
     }
 }
